@@ -39,4 +39,21 @@ export default function PricingPage() {
   );
 }
 
-export function meta() {}
+export function meta() {
+  return {
+    title: 'RemixExpenses - Pricing',
+    description: 'See your pricing plans.'
+  }
+}
+
+export function headers({
+  actionHeaders,
+  loaderHeaders,
+  parentHeaders
+}) {
+  return {
+    'Cache-Control': parentHeaders.get('Cache-Control')
+  }
+}
+
+export const handle = { disableJS: true };

@@ -40,3 +40,11 @@ export async function action({ params, request }) {
   }
 
 }
+
+export function meta({ params, location, data, parentsData }) { //window.location.href (URL)
+  const expense = parentsData['routes/__app/expenses'].find(expense => expense.id === params.id)
+  return {
+    title: expense.title,
+    description: 'Update Expense.'
+  }
+}

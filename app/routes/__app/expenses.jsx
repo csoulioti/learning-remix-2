@@ -3,6 +3,7 @@ import { FaPlus, FaDownload } from "react-icons/fa";
 import ExpensesList from "~/components/expenses/ExpensesList";
 import { requireUserSession } from "~/data/auth.server";
 import { getExpenses } from "~/data/expenses.server";
+import { json } from "@remix-run/node";
 
 export default function ExpensesLayout() {
 
@@ -38,5 +39,20 @@ export async function loader({ request }) {
   const userId = await requireUserSession(request)
 
   const expenses = await getExpenses(userId)
-  return expenses;
+  //return expenses;
+  return json(expenses, {
+    headers: {
+      'Cache-Control': 'max-age=3' // 3 seconds
+    }
+  })
+}
+
+export function headers({
+  actionHeaders,
+  loaderHeaders,
+  parentHeaders
+}) {
+  return {
+    'Cache-Control': loaderHeaders.get('Cache-Control')
+  }
 }
