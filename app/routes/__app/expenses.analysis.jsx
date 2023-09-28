@@ -6,6 +6,7 @@ import ExpenseStatistics from "~/components/expenses/ExpenseStatistics";
 import Chart from "~/components/expenses/Chart";
 import { json } from "@remix-run/node";
 import Error from "~/components/util/Error";
+import { requireUserSession } from "~/data/auth.server";
 
 export default function ExpensesAnalysisPage() {
   const expenses = useLoaderData();
@@ -16,8 +17,9 @@ export default function ExpensesAnalysisPage() {
   </main>
 }
 
-export async function loader() {
-  const expenses = await getExpenses()
+export async function loader({ request }) {
+  var userId = await requireUserSession(request)
+  const expenses = await getExpenses(userId)
   if (!expenses || expenses.length === 0) {
     throw json(
       { message: 'Could not load expenses for the requested analysis.' },

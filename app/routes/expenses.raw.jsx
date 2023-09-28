@@ -1,6 +1,9 @@
 import { getExpenses } from "~/data/expenses.server";
-export async function loader() {
-  const expenses = await getExpenses()
+import { requireUserSession } from "~/data/auth.server";
+
+export async function loader({ request }) {
+  const userId = await requireUserSession(request)
+  const expenses = await getExpenses(userId)
 
 
   return expenses;
